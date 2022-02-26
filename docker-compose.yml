@@ -5,9 +5,13 @@ services:
     build: ./django_blog
     restart: on-failure 
     command: >-
-        bash -c "/usr/local/bin/gunicorn --bind 0.0.0.0:8000 wsgi"
+        sh -c "python3 manage.py collectstatic --noinput &&
+               python3 manage.py migrate &&
+               /usr/local/bin/gunicorn --bind 0.0.0.0:8000 wsgi"
     depends_on:
       - db
+    env_file:
+      - ./.env.web
     networks:
       - awesome_network
     volumes:
