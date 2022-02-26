@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  web:
+    build: ./django_blog
+    restart: on-failure 
+    command: >-
+        bash -c "/usr/local/bin/gunicorn --bind 0.0.0.0:8000 wsgi"
+    depends_on:
+      - db
+    networks:
+      - awesome_network
+    volumes:
+      - web_static:/home/app/web/staticfiles
+    
+  db:
+    image: postgres:12.0-alpine
+    networks:
+      - awesome_network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  
+  nginx:
+    build: ./nginx
+    depends_on:
+      - web
+    env_file:
+      - ./.env.db
+    networks:
+      - awesome_network
+    ports:
+      - 8000:8000
+
+networks:
+  awesome_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  web_static:
