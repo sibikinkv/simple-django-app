@@ -1,0 +1,20 @@
+stages:
+    - build
+    - run
+
+
+build_dev:
+    stage: build
+  
+    image: docker:dind
+  
+    tags:
+        - less2.1-runner-docker
+
+    script:
+        - docker build -t $CI_REGISTRY_IMAGE:app_dev_$CI_COMMIT_SHORT_SHA .
+        - docker push $CI_REGISTRY_IMAGE:app_dev_$CI_COMMIT_SHORT_SHA
+
+    rules:
+      - if: '$CI_COMMIT_REF_NAME == "develop"'
+        when: always
