@@ -22,7 +22,7 @@ build_dev:
 
     script:
         - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG django_blog
-        - docker push $CI_REGISTRY_IMAGE:app_dev_$CI_COMMIT_SHORT_SHA
+        - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
 
     rules:
       - if: '$CI_COMMIT_REF_NAME == "develop"'
