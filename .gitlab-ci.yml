@@ -12,7 +12,7 @@ build_dev:
         - less2.1-runner-docker
 
     script:
-        - docker build -t $CI_REGISTRY_IMAGE:app_dev_$CI_COMMIT_SHORT_SHA .
+        - docker build -t $CI_REGISTRY_IMAGE:app_dev_$CI_COMMIT_SHORT_SHA django_blog
         - docker push $CI_REGISTRY_IMAGE:app_dev_$CI_COMMIT_SHORT_SHA
 
     rules:
