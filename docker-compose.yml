@@ -33,7 +33,7 @@ services:
     networks:
       - awesome_network
     ports:
-      - 8000:8000
+      - $DEPLOY_PORT:8000
 
 networks:
   awesome_network:
