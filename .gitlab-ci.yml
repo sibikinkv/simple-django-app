@@ -1,0 +1,37 @@
+stages:
+    - build
+    - deploy
+
+workflow:
+    rules:
+        - if: '$CI_COMMIT_REF_NAME == "develop"'
+          variables:
+              DEPLOY_PORT: 8001
+              IMAGE_TAG:  app_dev_$CI_COMMIT_SHORT_SHA
+        - if: '$CI_COMMIT_REF_NAME == "master"'
+          variables:
+              DEPLOY_PORT: 8000
+              IMAGE_TAG:  app_prod_$CI_COMMIT_SHORT_SHA
+        - when: never
+
+
+build:
+    stage: build
+  
+    image: docker:dind
+  
+    tags:
+        - less2.1-runner-docker
+
+    script:
+        - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG django_blog
+        - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
+
+run:
+    stage: deploy
+  
+    tags:
+        - less2.1-runner
+
+    script:
+        - docker-compose up -d
