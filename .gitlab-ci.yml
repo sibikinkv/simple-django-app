@@ -12,8 +12,6 @@ workflow:
           variables:
               DEPLOY_PORT: 8000
               IMAGE_TAG:  app_prod_$CI_COMMIT_SHORT_SHA
-        - when: never
-
 
 build:
     stage: build
