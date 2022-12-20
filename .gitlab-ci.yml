@@ -1,6 +1,7 @@
 stages:
     - build
     - deploy
+    - rollback
 
 workflow:
     rules:
@@ -32,4 +33,25 @@ run:
         - less2.1-runner
 
     script:
+        - docker ps | grep $CI_REGISTRY_IMAGE | awk '{print $2}' | awk -F ":" '{print $2}' > previous_tag
+        - docker-compose up -d
+
+    artifacts:
+
+        paths:
+            - previous_tag
+
+
+rollback:
+    stage: rollback
+
+    tags:
+        - less2.1-runner
+
+    rules:
+        - when: manual
+          allow_failure: true
+
+    script:
+        - export IMAGE_TAG=$(cat previous_tag)
         - docker-compose up -d
