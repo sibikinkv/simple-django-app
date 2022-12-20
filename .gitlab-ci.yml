@@ -39,7 +39,7 @@ run:
     artifacts:
 
         paths:
-          - previous_tag
+            - previous_tag
 
 
 rollback:
@@ -50,6 +50,7 @@ rollback:
 
     rules:
         - when: manual
+          allow_failure: true
 
     script:
         - export IMAGE_TAG=$(cat previous_tag)
