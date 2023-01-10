@@ -24,13 +24,14 @@ build:
 
     script:
         # - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG django_blog
-        - docker run \
-            -v $PWD/django_blog:/workspace \
-            -v ~/.docker/config.json:/kaniko/.docker/config.json:ro
-            gcr.io/kaniko-project/executor:latest \
-            --dockerfile=Dockerfile \
-            --context=/workspace \
-            --destination=$CI_REGISTRY_IMAGE:$IMAGE_TAG
+        - >
+            docker run 
+                -v $PWD/django_blog:/workspace
+                -v ~/.docker/config.json:/kaniko/.docker/config.json:ro
+                gcr.io/kaniko-project/executor:latest
+                --dockerfile=Dockerfile
+                --context=/workspace
+                --destination=$CI_REGISTRY_IMAGE:$IMAGE_TAG
         - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
 
 run:
