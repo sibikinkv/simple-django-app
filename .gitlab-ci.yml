@@ -18,7 +18,7 @@ build:
     stage: build
   
     image:
-        name: gcr.io/kaniko-project/executor:v0.15.0
+        name: gcr.io/kaniko-project/executor:v1.9.1-debug
         entrypoint: [""]
   
     tags:
