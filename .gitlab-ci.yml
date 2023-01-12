@@ -17,14 +17,20 @@ workflow:
 build:
     stage: build
   
-    image: docker:dind
+    image:
+        name: gcr.io/kaniko-project/executor:v1.9.1-debug
+        entrypoint: [""]
   
     tags:
         - less2.1-runner-docker
 
     script:
-        - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG django_blog
-        - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
+        - mkdir -p /kaniko/.docker
+        - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+        - /kaniko/executor
+          --context "${CI_PROJECT_DIR}/django_blog"
+          --dockerfile "${CI_PROJECT_DIR}/django_blog/Dockerfile"
+          --destination "${CI_REGISTRY_IMAGE}:${IMAGE_TAG}"
 
 run:
     stage: deploy
