@@ -17,7 +17,7 @@ workflow:
 build_dev:
     stage: build
   
-    image: docker:dind
+    image: docker:stable
   
     tags:
         - less2.1-runner-docker
@@ -29,7 +29,7 @@ build_dev:
 build_dev_pr:
     stage: build
   
-    image: docker:stable
+    image: docker:dind
   
     tags:
         - less2.1-runner-docker-priveleged
