@@ -41,6 +41,19 @@ build_dev_pr:
         - docker build -t $CI_REGISTRY_IMAGE:${IMAGE_TAG}_pr django_blog
         - docker push $CI_REGISTRY_IMAGE:${IMAGE_TAG}_pr
 
+build_fail:
+    stage: build
+
+    tags:
+        - less2.1-runner
+
+    rules:
+        - when: always
+          allow_failure: true
+
+    script:
+        - docker run hello-world
+
 run:
     stage: deploy
   
