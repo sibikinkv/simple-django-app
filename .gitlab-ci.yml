@@ -26,6 +26,18 @@ build:
         - docker build -t $CI_REGISTRY_IMAGE:$IMAGE_TAG django_blog
         - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
 
+build_dev_pr:
+    stage: build
+  
+    image: docker:dind
+  
+    tags:
+        - less2.1-runner-docker-priveleged
+
+    script:
+        - docker build -t $CI_REGISTRY_IMAGE:${IMAGE_TAG}_pr django_blog
+        - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
+
 run:
     stage: deploy
   
