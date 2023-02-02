@@ -14,23 +14,17 @@ workflow:
               DEPLOY_PORT: 8000
               IMAGE_TAG:  app_prod_$CI_COMMIT_SHORT_SHA
 
-build:
+build_dev:
     stage: build
   
-    image:
-        name: gcr.io/kaniko-project/executor:v1.9.1-debug
-        entrypoint: [""]
+    image: docker:dind
   
     tags:
         - less2.1-runner-docker
 
     script:
-        - mkdir -p /kaniko/.docker
-        - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
-        - /kaniko/executor
-          --context "${CI_PROJECT_DIR}/django_blog"
-          --dockerfile "${CI_PROJECT_DIR}/django_blog/Dockerfile"
-          --destination "${CI_REGISTRY_IMAGE}:${IMAGE_TAG}"
+        - docker build -t $CI_REGISTRY_IMAGE:${IMAGE_TAG} django_blog
+        - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
 
 build_dev_pr:
     stage: build
