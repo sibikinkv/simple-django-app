@@ -39,7 +39,7 @@ build_dev_pr:
 
     script:
         - docker build -t $CI_REGISTRY_IMAGE:${IMAGE_TAG}_pr django_blog
-        - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
+        - docker push $CI_REGISTRY_IMAGE:${IMAGE_TAG}_pr
 
 run:
     stage: deploy
