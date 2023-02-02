@@ -52,7 +52,7 @@ build_fail:
           allow_failure: true
 
     script:
-        - docker run hello-world
+        - docker run hello-world sh
 
 run:
     stage: deploy
